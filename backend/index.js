@@ -73,7 +73,7 @@ app.use(
 );
 
 // Iniciamos el servidor y mostramos un mensaje para confirmar que está funcionando
-app.listen(PORT, () => {
+/* app.listen(PORT, () => {
   console.log(
     `Servidor corriendo en ${
       process.env.NODE_ENV === "PRODUCTION"
@@ -82,7 +82,10 @@ app.listen(PORT, () => {
     }`
   );
 });
-
+ */
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en https://viveoutdoors.onrender.com`);
+});
 // const { PORT, SECRET_JWT_KEY } = process.env;
 
 // Middlewares
