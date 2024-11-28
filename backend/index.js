@@ -68,7 +68,7 @@ const app = express();
 const PORT = process.env.PORT_SERVER || 3000;
 app.use(
   cors({
-    origin: "https://viveoficial.onrender.com",
+    origin: "https://viveoutdoors.onrender.com",
   })
 );
 
