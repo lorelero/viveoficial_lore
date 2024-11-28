@@ -44,7 +44,7 @@ const {
   cambiarDatosPersonales,
   obtenerCategoriasHome,
   obtenerSalesHome,
-  insertarProductosSale
+  insertarProductosSale,
 } = require("./consultas/consultas.js");
 const {
   registrarUsuario,
@@ -62,9 +62,13 @@ const {
 require("dotenv").config(); // Cargamos las variables de entorno desde el archivo .env
 
 // Creamos una instancia de Express
-const app = express();
-
-// Configuramos el puerto en el que escuchará nuestra aplicación
+const app = express(
+  app.use(
+    cors({
+      origin: "https://viveoficial.onrender.com", // Cambia según sea necesario
+    })
+  )
+);
 const PORT = process.env.PORT_SERVER || 3000;
 
 // Iniciamos el servidor y mostramos un mensaje para confirmar que está funcionando
@@ -197,8 +201,8 @@ app.post("/crearpublicacion", verifyToken, async (req, res) => {
       id_categoria
     );
 
-     // Insertar el producto en tabla sale como inactivo por defecto
-     const nuevoProductoSale = await insertarProductosSale(
+    // Insertar el producto en tabla sale como inactivo por defecto
+    const nuevoProductoSale = await insertarProductosSale(
       nuevoProducto.id_producto
     );
 
@@ -208,7 +212,7 @@ app.post("/crearpublicacion", verifyToken, async (req, res) => {
       categoria: nuevoProductoCategoria,
       imagen: nuevaImagen,
       publicacion: nuevaPublicacion,
-      sale: nuevoProductoSale
+      sale: nuevoProductoSale,
     });
   } catch (error) {
     console.error("Error al crear la publicación:", error);
@@ -312,16 +316,15 @@ app.get("/datospersonales", verifyToken, async (req, res) => {
 });
 
 // MODIFICAR DATOS DE USUARIO
-app.put('/datospersonales', verifyToken, async (req, res) => {
-
+app.put("/datospersonales", verifyToken, async (req, res) => {
   const datosActualizados = req.body; // Datos enviados desde el frontend
-// console.log("id que llega mas datos en la ruta:" ,  datosActualizados )
+  // console.log("id que llega mas datos en la ruta:" ,  datosActualizados )
   try {
-    const resultado = await cambiarDatosPersonales( datosActualizados);
+    const resultado = await cambiarDatosPersonales(datosActualizados);
     res.status(200).json(resultado); // Responder con los datos actualizados
   } catch (error) {
     console.error("Error al actualizar los datos personales:", error);
-    res.status(500).json({ error: 'No se pudo actualizar la información.' });
+    res.status(500).json({ error: "No se pudo actualizar la información." });
   }
 });
 
@@ -335,7 +338,6 @@ app.get("/ventas", async (req, res) => {
     res.status(500).json({ error: "Error al obtener ventas" });
   }
 });
-
 
 // RUTA PARA OBTENER PRODUCTOS Y QUE SE ENLISTEN EN LA TIENDA, SOLO AQUELLOS QUE ESTAN ACTIVOS EN PUBLICACIONES
 app.get("/tienda", async (req, res) => {
@@ -372,7 +374,6 @@ app.get("/saleshome", async (req, res) => {
   }
 });
 
-
 // Manejo de errores 404
 app.use((req, res, next) => {
   res.status(404).json({
@@ -380,4 +381,3 @@ app.use((req, res, next) => {
     error,
   });
 });
-
