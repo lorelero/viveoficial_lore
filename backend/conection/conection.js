@@ -3,7 +3,9 @@
 require('dotenv').config();
 const { Pool } = require('pg'); //importa la clase Pool de la biblioteca pg
 
+const  FRONTEND_URL  = process.env.FRONTEND_URL || "http://localhost:5173/";
 const {  DATABASE_URL, DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD, DB_PORT} = process.env;  //extrae las variables de entorno necesarias para la conexión a la base de datos del archivo .env
+
 
 const pool = new Pool({   //configuración de la conexión, se crea una instancia de Pool con la configuración necesaria para conectarse a la base de datos PostgreSQL.
     connectionString: DATABASE_URL || undefined, // Usa DATABASE_URL si está definido
@@ -16,4 +18,4 @@ const pool = new Pool({   //configuración de la conexión, se crea una instanci
 });
 
 
-module.exports = { pool };
+module.exports = { pool, FRONTEND_URL };
