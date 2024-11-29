@@ -21,8 +21,6 @@
 // Importamos las dependencias necesarias para nuestra aplicación
 
 const express = require("express");
-const config = require ("dotenv");
-const pg = require ("pg");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -66,16 +64,13 @@ require("dotenv").config(); // Cargamos las variables de entorno desde el archiv
 
 // Creamos una instancia de Express
 const app = express();
-const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-  //ssl: true 
-})
+
 
 
 // Configuramos el puerto en el que escuchará nuestra aplicación
-const PORT = process.env.PORT_SERVER || 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT_SERVER}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 /* app.use(
   cors({
