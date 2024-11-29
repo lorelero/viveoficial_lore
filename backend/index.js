@@ -21,6 +21,8 @@
 // Importamos las dependencias necesarias para nuestra aplicación
 
 const express = require("express");
+const config = require ("dotenv");
+const pg = require ("pg");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -58,14 +60,23 @@ const {
   getProductosSale,
   getProductosCategorias,
 } = require("./consultas/consultas.js");
+const { connectionString } = require("pg/lib/defaults.js");
 
 require("dotenv").config(); // Cargamos las variables de entorno desde el archivo .env
 
 // Creamos una instancia de Express
 const app = express();
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  //ssl: true 
+})
+
 
 // Configuramos el puerto en el que escuchará nuestra aplicación
 const PORT = process.env.PORT_SERVER || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT_SERVER}`);
+});
 /* app.use(
   cors({
     origin: "https://viveoutdoors.onrender.com",
@@ -83,9 +94,7 @@ const PORT = process.env.PORT_SERVER || 3000;
   );
 }); */
  
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT_SERVER}`);
-});
+
 // const { PORT, SECRET_JWT_KEY } = process.env;
 
 // Middlewares
